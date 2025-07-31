@@ -1,0 +1,29 @@
+{
+  "qid": 3,
+  "timestamp": 1753461188,
+  "question": "A 60-year-old woman presents to a physician for worsening shortness of breath and increasing abdominal distention over the last 3 months. She says that the shortness of breath is worse on exertion and improves with rest. While she could previously walk to the nearby store for her groceries, she now has to drive because she gets ''winded'' on the way. The patient was diagnosed with diabetes 5 years ago and is compliant with her medications. The medical history is otherwise unremarkable. The physical examination reveals gross ascites and visibly engorged periumbilical veins. Bilateral pitting edema is noted around the ankles. The finger-prick blood glucose level is 100 mg/dL. What is the mechanism of action of the anti-diabetic medication this patient is most likely taking?",
+  "options": [
+    "(A) Binding to the alpha subunit of the insulin receptor",
+    "(B) Closure of ATP-sensitive K-channels in the pancreatic beta-cell",
+    "(C) Increased gene expression of GLUT-4",
+    "(D) Glucagon-like peptide-1 receptor agonist"
+  ],
+  "generated_answer": "The correct answer is (B) Closure of ATP-sensitive K-channels in the pancreatic beta-cell. \n\nThe patient's presentation (ascites, engorged periumbilical veins, and bilateral pitting edema) suggests cirrhosis with portal hypertension, which is a known complication of non-alcoholic steatohepatitis (NASH), a condition associated with type 2 diabetes. The most common anti-diabetic medication associated with liver disease is sulfonylureas, which work by closing ATP-sensitive K-channels in pancreatic beta-cells to stimulate insulin secretion. \n\nWhile other options may represent mechanisms of other anti-diabetic drugs (e.g., D for GLP-1 agonists, A for insulin, C for thiazolidinediones), sulfonylureas are the most likely in this context, especially given the patient's long-standing diabetes and the absence of other notable history. \n\nThus, the answer is (B).",
+  "reference_answer": "C",
+  "case_history": {
+    "reasoning": "Direct answer, no explicit reasoning",
+    "prompt_type": "zero_shot",
+    "model": "deepseek-v3-official",
+    "raw_responses": [
+      "The correct answer is (B) Closure of ATP-sensitive K-channels in the pancreatic beta-cell. \n\nThe patient's presentation (ascites, engorged periumbilical veins, and bilateral pitting edema) suggests cirrhosis with portal hypertension, which is a known complication of non-alcoholic steatohepatitis (NASH), a condition associated with type 2 diabetes. The most common anti-diabetic medication associated with liver disease is sulfonylureas, which work by closing ATP-sensitive K-channels in pancreatic beta-cells to stimulate insulin secretion. \n\nWhile other options may represent mechanisms of other anti-diabetic drugs (e.g., D for GLP-1 agonists, A for insulin, C for thiazolidinediones), sulfonylureas are the most likely in this context, especially given the patient's long-standing diabetes and the absence of other notable history. \n\nThus, the answer is (B)."
+    ],
+    "individual_responses": [
+      {
+        "answer": "The correct answer is (B) Closure of ATP-sensitive K-channels in the pancreatic beta-cell. \n\nThe patient's presentation (ascites, engorged periumbilical veins, and bilateral pitting edema) suggests cirrhosis with portal hypertension, which is a known complication of non-alcoholic steatohepatitis (NASH), a condition associated with type 2 diabetes. The most common anti-diabetic medication associated with liver disease is sulfonylureas, which work by closing ATP-sensitive K-channels in pancreatic beta-cells to stimulate insulin secretion. \n\nWhile other options may represent mechanisms of other anti-diabetic drugs (e.g., D for GLP-1 agonists, A for insulin, C for thiazolidinediones), sulfonylureas are the most likely in this context, especially given the patient's long-standing diabetes and the absence of other notable history. \n\nThus, the answer is (B).",
+        "full_response": "The correct answer is (B) Closure of ATP-sensitive K-channels in the pancreatic beta-cell. \n\nThe patient's presentation (ascites, engorged periumbilical veins, and bilateral pitting edema) suggests cirrhosis with portal hypertension, which is a known complication of non-alcoholic steatohepatitis (NASH), a condition associated with type 2 diabetes. The most common anti-diabetic medication associated with liver disease is sulfonylureas, which work by closing ATP-sensitive K-channels in pancreatic beta-cells to stimulate insulin secretion. \n\nWhile other options may represent mechanisms of other anti-diabetic drugs (e.g., D for GLP-1 agonists, A for insulin, C for thiazolidinediones), sulfonylureas are the most likely in this context, especially given the patient's long-standing diabetes and the absence of other notable history. \n\nThus, the answer is (B)."
+      }
+    ],
+    "voting_details": null,
+    "processing_time": 12.899325847625732
+  }
+}

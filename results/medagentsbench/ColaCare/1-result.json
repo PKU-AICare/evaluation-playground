@@ -1,0 +1,86 @@
+{
+    "qid": 1,
+    "timestamp": 1753422750,
+    "question": "Among the following, which acoustic parameter is considered to indicate a better voice condition with a higher measurement value?",
+    "options": [
+        "(A) soft phonation index (SPI)",
+        "(B) degree of voice breaks (DVB)",
+        "(C) cepstral peak prominence (CPP)",
+        "(D) average fundamental frequency (F0)"
+    ],
+    "generated_answer": "C",
+    "reference_answer": "B",
+    "case_history": {
+        "rounds": [
+            {
+                "round": 1,
+                "opinions": [
+                    {
+                        "doctor_id": "doctor_1",
+                        "specialty": "Internal Medicine",
+                        "opinion": {
+                            "explanation": "To determine which acoustic parameter indicates a better voice condition with a higher measurement value, let's analyze each option: (A) Soft Phonation Index (SPI) measures the ratio of low to high frequency energy in the voice, where a higher SPI can indicate breathiness, not necessarily a better voice condition. (B) Degree of Voice Breaks (DVB) quantifies the instability in voice production, where a higher DVB indicates more voice breaks and thus a worse voice condition. (C) Cepstral Peak Prominence (CPP) is a measure of the periodicity in the voice signal, where a higher CPP indicates a more periodic and thus healthier voice condition. (D) Average Fundamental Frequency (F0) is the average pitch of the voice, where a higher F0 doesn't necessarily indicate a better voice condition but rather a higher pitch. Therefore, among the options, CPP is the parameter where a higher value indicates a better voice condition.",
+                            "answer": "(C) cepstral peak prominence (CPP)"
+                        }
+                    },
+                    {
+                        "doctor_id": "doctor_2",
+                        "specialty": "Surgery",
+                        "opinion": {
+                            "explanation": "To determine which acoustic parameter indicates a better voice condition with a higher measurement value, let's analyze each option: (A) Soft Phonation Index (SPI) measures the relative amount of high-frequency energy in the voice, where a higher SPI can indicate breathiness, which is not necessarily a sign of a better voice condition. (B) Degree of Voice Breaks (DVB) quantifies the irregularity in voicing, where a higher DVB indicates more voice breaks, which is a sign of poorer voice quality. (C) Cepstral Peak Prominence (CPP) is a measure of the periodicity and harmonic structure of the voice, where a higher CPP indicates a more periodic and harmonic voice, which is associated with better voice quality. (D) Average Fundamental Frequency (F0) is the average pitch of the voice, where a higher F0 does not necessarily indicate better voice quality but rather a higher pitch. Therefore, among the options, a higher CPP is most indicative of a better voice condition.",
+                            "answer": "(C) cepstral peak prominence (CPP)"
+                        }
+                    },
+                    {
+                        "doctor_id": "doctor_3",
+                        "specialty": "Radiology",
+                        "opinion": {
+                            "explanation": "To determine which acoustic parameter indicates a better voice condition with a higher measurement value, let's analyze each option: (A) Soft Phonation Index (SPI) measures the ratio of low to high frequency energy in the voice, where a higher SPI can indicate breathiness, which is not typically a sign of a better voice condition. (B) Degree of Voice Breaks (DVB) quantifies the irregularity in voicing, and a higher DVB indicates more voice breaks, which is a sign of poorer voice quality. (C) Cepstral Peak Prominence (CPP) is a measure of the periodicity in the voice signal, where a higher CPP indicates a more periodic and thus better voice quality. (D) Average Fundamental Frequency (F0) is the average pitch of the voice, and while it can vary based on individual and situational factors, a higher F0 does not necessarily indicate a better voice condition. Therefore, among the options, CPP is the parameter where a higher measurement value is associated with a better voice condition.",
+                            "answer": "(C) cepstral peak prominence (CPP)"
+                        }
+                    }
+                ],
+                "synthesis": {
+                    "explanation": "The consensus among the specialists is that the acoustic parameter indicating a better voice condition with a higher measurement value is the cepstral peak prominence (CPP). All doctors agree that a higher CPP signifies a more periodic and harmonic voice, which is associated with better voice quality. In contrast, a higher soft phonation index (SPI) can indicate breathiness, a higher degree of voice breaks (DVB) signifies poorer voice quality due to more voice breaks, and a higher average fundamental frequency (F0) merely indicates a higher pitch without necessarily reflecting better voice condition. Therefore, CPP is unanimously recognized as the parameter where an increased value correlates with improved voice health.",
+                    "answer": "(C) cepstral peak prominence (CPP)"
+                },
+                "reviews": [
+                    {
+                        "doctor_id": "doctor_1",
+                        "specialty": "Internal Medicine",
+                        "review": {
+                            "agree": true,
+                            "reason": "The analysis and synthesized explanation accurately reflect the understanding of each acoustic parameter's implication on voice condition. CPP is indeed the parameter where a higher value indicates a more periodic and healthier voice, making it the correct choice among the options provided.",
+                            "answer": "(C) cepstral peak prominence (CPP)"
+                        }
+                    },
+                    {
+                        "doctor_id": "doctor_2",
+                        "specialty": "Surgery",
+                        "review": {
+                            "agree": true,
+                            "reason": "The analysis and synthesized explanation accurately reflect the understanding of acoustic parameters in voice quality assessment. Cepstral Peak Prominence (CPP) is indeed a reliable indicator of voice quality, with higher values associated with better periodicity and harmonic structure, which are hallmarks of a healthy voice. The other parameters either indicate negative aspects of voice quality or are neutral with respect to voice health.",
+                            "answer": "(C) cepstral peak prominence (CPP)"
+                        }
+                    },
+                    {
+                        "doctor_id": "doctor_3",
+                        "specialty": "Radiology",
+                        "review": {
+                            "agree": true,
+                            "reason": "The analysis and synthesized explanation accurately reflect the understanding of acoustic parameters in voice quality assessment. Cepstral Peak Prominence (CPP) is indeed recognized as a reliable indicator of voice quality, where higher values correspond to better voice conditions due to increased periodicity and harmonicity. The other options either indicate poorer voice quality or do not directly correlate with voice condition improvements.",
+                            "answer": "(C) cepstral peak prominence (CPP)"
+                        }
+                    }
+                ]
+            }
+        ],
+        "final_decision": {
+            "explanation": "The consensus among the specialists is that the acoustic parameter indicating a better voice condition with a higher measurement value is the cepstral peak prominence (CPP). All doctors agree that a higher CPP signifies a more periodic and harmonic voice, which is associated with better voice quality. In contrast, a higher soft phonation index (SPI) can indicate breathiness, a higher degree of voice breaks (DVB) signifies poorer voice quality due to more voice breaks, and a higher average fundamental frequency (F0) merely indicates a higher pitch without necessarily reflecting better voice condition. Therefore, CPP is unanimously recognized as the parameter where an increased value correlates with improved voice health.",
+            "answer": "(C) cepstral peak prominence (CPP)"
+        },
+        "consensus_reached": true,
+        "total_rounds": 1,
+        "processing_time": 107.42866396903992
+    }
+}

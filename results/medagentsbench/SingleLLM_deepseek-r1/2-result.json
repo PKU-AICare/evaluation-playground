@@ -1,0 +1,28 @@
+{
+  "qid": 2,
+  "timestamp": 1753461258,
+  "question": "To examine age-related differences in the relationship between personality and coping strategies in an Australian population of psychiatric inpatients.\nConsenting eligible adults (N=238) from 18-100 years of age consecutively admitted to inpatient psychiatry units were assessed using the SCID I and II, the Coping Orientations to Problems Experienced Scale (COPE), the Brief Psychiatric Rating Scale (BPRS), the Global Assessment of Functioning Scale (GAF), the Social and Occupational Functioning Assessment Scale (SOFAS), the 12 Item Short-Form Heath Survey (SF12), the Sarason Social Support Questionnaire, and the NEO Five Factor Inventory (NEO-FFI) (cognitively impaired, and non-English speaking patients were excluded).\nOlder adults reported less symptomatology than younger patients and younger patients described more personality dysfunction than older patients. As assessed by the COPE, older adults reported lower levels of dysfunctional coping strategies than younger adults. Personality traits, social supports, gender, and age predicted coping strategies, while Axis I diagnosis, education, personality disorder, and symptom severity were not significant predictors of coping strategies.\nDoes age moderate the effect of personality disorder on coping style in psychiatric inpatients?",
+  "options": [
+    "(A) yes",
+    "(B) no",
+    "(C) maybe"
+  ],
+  "generated_answer": "B",
+  "reference_answer": "A",
+  "case_history": {
+    "reasoning": "Direct answer, no explicit reasoning",
+    "prompt_type": "zero_shot",
+    "model": "deepseek-r1-official",
+    "raw_responses": [
+      "(B)"
+    ],
+    "individual_responses": [
+      {
+        "answer": "(B)",
+        "full_response": "(B)"
+      }
+    ],
+    "voting_details": null,
+    "processing_time": 56.210662841796875
+  }
+}
