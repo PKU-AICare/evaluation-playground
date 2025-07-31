@@ -1,12 +1,18 @@
 // --- 配置区 ---
-const DATASETS = ["hle", "medagentsbench"];
-const MODELS = [
-  "SingleLLM_deepseek-v3",
-  "SingleLLM_deepseek-r1",
-  "ColaCare",
-  "MedAgent",
-];
-const NUM_QUESTIONS = 3;
+const DATASETS = ["ConfAgents", "HealthFlow"];
+const MODELS = {
+  ConfAgents: ["conformal", "colacare", "mdagents", "medagent"],
+  HealthFlow: [
+    "SingleLLM_deepseek-v3",
+    "SingleLLM_deepseek-r1",
+    "ColaCare",
+    "MedAgent",
+  ],
+};
+const NUM_QUESTIONS = {
+  ConfAgents: 16,
+  HealthFlow: 16,
+};
 
 // --- DOM 元素获取 ---
 const datasetList = document.getElementById("dataset-list");
@@ -49,9 +55,6 @@ function setupEventListeners() {
   evaluationArea.addEventListener("submit", handleFormSubmit);
 }
 
-/**
- * [重大修改] 加载数据集，但只显示第一个问题
- */
 async function loadAndDisplayDataset(datasetName) {
   mainTitle.textContent = `评测数据集: ${datasetName}`;
   evaluationArea.innerHTML = "";
@@ -63,15 +66,19 @@ async function loadAndDisplayDataset(datasetName) {
   userSelections = {};
 
   try {
-    for (let i = 1; i <= NUM_QUESTIONS; i++) {
-      const shuffledModels = [...MODELS].sort(() => Math.random() - 0.5);
-      const questionData = await fetchQuestionData(
-        datasetName,
-        i,
-        shuffledModels
+    const questionData = await fetchQuestionData(datasetName);
+    for (let i = 0; i < NUM_QUESTIONS[datasetName]; i++) {
+      const shuffledModels = [...MODELS[datasetName]].sort(
+        () => Math.random() - 0.5
       );
-      if (questionData) {
-        const card = createQACard(questionData);
+
+      if (questionData && questionData[i]) {
+        const shuffledQuestionData = shuffleQuestionData(
+          questionData[i],
+          shuffledModels
+        );
+        shuffledQuestionData.id = i + 1;
+        const card = createQACard(shuffledQuestionData);
         evaluationArea.appendChild(card);
       }
     }
@@ -86,66 +93,88 @@ async function loadAndDisplayDataset(datasetName) {
   }
 }
 
-async function fetchQuestionData(datasetName, questionId, modelOrder) {
-  const promises = modelOrder.map((modelName) => {
-    const url = `results/${datasetName}/${modelName}/${questionId}-result.json`;
-    return fetch(url)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`网络响应错误: ${response.statusText}`);
-        return response.json();
-      })
-      .then((data) => ({ ...data, modelName }))
-      .catch((error) => {
-        console.error(`无法加载文件: ${url}`, error);
-        return null;
-      });
-  });
-  const results = await Promise.all(promises);
-  const validResults = results.filter((r) => r !== null);
-  if (validResults.length === 0) return null;
-  return {
-    id: questionId,
-    dataset: datasetName,
-    question: validResults[0].question || validResults[0].task,
-    options: validResults[0].options || null,
-    referenceAnswer: validResults[0].reference_answer,
-    modelsData: validResults,
-  };
+async function fetchQuestionData(datasetName) {
+  const url = `data/${datasetName}.json`;
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`网络响应错误: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data; // 直接返回从JSON文件读取的数据列表
+  } catch (error) {
+    console.error(`无法加载文件: ${url}`, error);
+    return null;
+  }
 }
 
-/**
- * [重大修改] createQACard, 以匹配图片中的新布局
- */
+function shuffleQuestionData(questionData, shuffledModels) {
+  // 创建问题数据的副本，保留基本信息
+  const shuffledData = {
+    dataset: questionData.dataset,
+    question: questionData.question,
+    options: questionData.options,
+    answer: questionData.answer,
+  };
+
+  // 创建新的modelsData数组，按照shuffledModels的顺序排列
+  shuffledData.modelsData = [];
+
+  shuffledModels.forEach((modelName, index) => {
+    // 从原始数据中获取对应模型的数据
+    const modelData = questionData[modelName];
+    if (modelData) {
+      // 添加模型名称到数据中，用于后续显示
+      const shuffledModelData = {
+        ...modelData,
+        modelName: modelName,
+        originalIndex: index,
+      };
+      shuffledData.modelsData.push(shuffledModelData);
+    }
+  });
+
+  return shuffledData;
+}
+
 function createQACard(data) {
   const card = document.createElement("div");
   card.className = "qa-card";
-  card.id = `q-${data.dataset}-${data.id}`;
+  card.id = `q-${currentDatasetName}-${data.id}`;
 
   let optionsHtml = "";
-  if (data.options && Array.isArray(data.options)) {
+  if (data.options && typeof data.options === "object") {
     optionsHtml = '<ol class="question-options">';
-    data.options.forEach((option) => (optionsHtml += `<li>${option}</li>`));
+    Object.entries(data.options).forEach(([key, value]) => {
+      optionsHtml += `<li>${value}</li>`;
+    });
     optionsHtml += "</ol>";
   }
 
   let modelsHtml = "";
   data.modelsData.forEach((modelData, index) => {
     let letter = "";
-    if (data.options && data.options.length > 0) {
-      letter = modelData.generated_answer;
+    if (data.options && modelData.pred_answer) {
+      letter = modelData.pred_answer;
     }
     const answerTitle = `回答 ${index + 1}: ${letter}`;
+
+    // 处理reasoning字段，可能是数组或字符串
+    let reasoningContent = "";
+    if (modelData.reasoning) {
+      if (Array.isArray(modelData.reasoning)) {
+        reasoningContent = modelData.reasoning.join("<br><br>");
+      } else {
+        reasoningContent = modelData.reasoning;
+      }
+    }
 
     modelsHtml += `
       <div class="model-answer">
           <h4>${answerTitle}</h4>
           <div class="analysis-box">
               <h5>分析:</h5>
-              <div class="explanation-content">${
-                modelData.case_history.reasoning ||
-                modelData.case_history.final_decision.explanation
-              }</div>
+              <div class="explanation-content">${reasoningContent}</div>
           </div>
           <div class="radio-wrapper">
               <label>
@@ -162,7 +191,7 @@ function createQACard(data) {
   card.innerHTML = `
       <h3>问题 ${data.id}: ${data.question}</h3>
       ${optionsHtml}
-      <div class="reference-answer"><strong>参考答案:</strong> <p>${data.referenceAnswer}</p></div>
+      <div class="reference-answer"><strong>参考答案:</strong> <p>${data.answer}</p></div>
       <form class="preference-form" data-question-id="${data.id}">
           <fieldset>
               <legend>请选择以下哪一个回答更好？</legend>
@@ -209,7 +238,9 @@ function handleFormSubmit(event) {
   if (navLink) navLink.classList.add("completed");
 
   // 检查是否全部完成
-  if (Object.keys(userSelections).length === NUM_QUESTIONS) {
+  if (
+    Object.keys(userSelections).length === NUM_QUESTIONS[currentDatasetName]
+  ) {
     showExportButton();
     // 最后一题，不跳转
   } else {
@@ -225,7 +256,7 @@ function handleFormSubmit(event) {
  * [新增] 创建分页导航
  */
 function createPaginationNav() {
-  for (let i = 1; i <= NUM_QUESTIONS; i++) {
+  for (let i = 1; i <= NUM_QUESTIONS[currentDatasetName]; i++) {
     const link = document.createElement("a");
     link.className = "page-link";
     link.textContent = i;
@@ -243,7 +274,7 @@ function createPaginationNav() {
  * [新增] 显示指定ID的问题
  */
 function showQuestion(questionId) {
-  if (questionId > NUM_QUESTIONS || questionId < 1) return;
+  if (questionId > NUM_QUESTIONS[currentDatasetName] || questionId < 1) return;
 
   // 隐藏所有卡片
   document
@@ -262,7 +293,7 @@ function showQuestion(questionId) {
     // 更新最后一题的按钮文本
     const formButton = targetCard.querySelector(".preference-form button");
     if (formButton) {
-      if (questionId === NUM_QUESTIONS) {
+      if (questionId === NUM_QUESTIONS[currentDatasetName]) {
         formButton.textContent = "保存并完成评测";
       } else {
         formButton.textContent = "保存并进入下一题";
