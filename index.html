@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>大模型医疗问答能力评测</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <aside class="sidebar">
+        <h2>选择数据集</h2>
+        <ul id="dataset-list">
+          <!-- 数据集将由 JavaScript 动态填充 -->
+        </ul>
+      </aside>
+      <main class="content">
+        <h1 id="main-title">请从左侧选择一个数据集开始评测</h1>
+        <!-- [新增] 题目导航栏容器 -->
+        <div id="pagination-nav"></div>
+        <div id="evaluation-area">
+          <!-- 问题和答案卡片将由 JavaScript 动态填充 -->
+        </div>
+        <div id="export-container"></div>
+        <div id="loading-spinner" class="spinner" style="display: none"></div>
+      </main>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
