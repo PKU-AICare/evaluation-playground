@@ -6,8 +6,9 @@ const MODELS = {
 };
 const NUM_QUESTIONS = {
   ConfAgents: 16,
-  HealthFlow: 10,
+  HealthFlow: 20,
 };
+const CSV_ROW_LIMIT = 5; // 定义CSV可折叠的行数阈值
 
 // --- DOM 元素获取 ---
 const datasetList = document.getElementById("dataset-list");
@@ -17,13 +18,9 @@ const loadingSpinner = document.getElementById("loading-spinner");
 const exportContainer = document.getElementById("export-container");
 const paginationNav = document.getElementById("pagination-nav");
 
-// --- 状态变量 ---
-let currentDatasetName = "";
-let userSelections = {};
-
-// --- 修改: 初始化 Markdown 转换器，增加配置以兼容公式 ---
+// --- 初始化 Markdown 转换器 ---
 const markdownConverter = new showdown.Converter({
-  literalMidWordUnderscores: true, // 防止 a_b 被错误地转为 a<em>b</em>
+  literalMidWordUnderscores: true,
 });
 
 // --- 初始化 ---
@@ -53,10 +50,16 @@ function setupEventListeners() {
     }
   });
   evaluationArea.addEventListener("submit", handleFormSubmit);
+
+  evaluationArea.addEventListener("click", (event) => {
+    if (event.target.matches(".csv-toggle-button")) {
+      handleCsvToggle(event.target);
+    }
+  });
 }
 
 async function loadAndDisplayDataset(datasetName) {
-  mainTitle.textContent = `评测数据集: ${datasetName}`;
+  mainTitle.textContent = `评测对象: ${datasetName}`;
   evaluationArea.innerHTML = "";
   exportContainer.innerHTML = "";
   paginationNav.innerHTML = "";
@@ -78,15 +81,15 @@ async function loadAndDisplayDataset(datasetName) {
           shuffledModels
         );
         shuffledQuestionData.id = i + 1;
-        const card = createQACard(shuffledQuestionData);
+        const card = await createQACard(shuffledQuestionData);
         evaluationArea.appendChild(card);
       }
     }
     createPaginationNav();
     showQuestion(1);
   } catch (error) {
-    console.error("加载数据集时出错:", error);
-    evaluationArea.innerHTML = `<p style="color: red;">加载数据集 "${datasetName}" 失败。</p>`;
+    console.error("加载数据时出错:", error);
+    evaluationArea.innerHTML = `<p style="color: red;">加载评测对象 "${datasetName}" 失败。</p>`;
   } finally {
     loadingSpinner.style.display = "none";
   }
@@ -99,8 +102,7 @@ async function fetchQuestionData(datasetName) {
     if (!response.ok) {
       throw new Error(`网络响应错误: ${response.statusText}`);
     }
-    const data = await response.json();
-    return data;
+    return await response.json();
   } catch (error) {
     console.error(`无法加载文件: ${url}`, error);
     return null;
@@ -120,19 +122,87 @@ function shuffleQuestionData(questionData, shuffledModels) {
   shuffledModels.forEach((modelName, index) => {
     const modelData = questionData[modelName];
     if (modelData) {
-      const shuffledModelData = {
+      shuffledData.modelsData.push({
         ...modelData,
         modelName: modelName,
         originalIndex: index,
-      };
-      shuffledData.modelsData.push(shuffledModelData);
+      });
     }
   });
 
   return shuffledData;
 }
 
-function createQACard(data) {
+async function renderCsvToTable(csvPath) {
+  try {
+    const response = await fetch(csvPath);
+    if (!response.ok) throw new Error(`获取CSV失败: ${response.statusText}`);
+    const csvText = await response.text();
+    const lines = csvText.trim().split("\n");
+    if (lines.length === 0) return "";
+
+    const dataRows = lines.slice(1);
+    const isCollapsible = dataRows.length > CSV_ROW_LIMIT;
+
+    let tableHtml = '<table class="rendered-csv-table">';
+    const headers = lines[0].split(",");
+    tableHtml += "<thead><tr>";
+    headers.forEach((h) => (tableHtml += `<th>${h.trim()}</th>`));
+    tableHtml += "</tr></thead><tbody>";
+
+    dataRows.forEach((line, index) => {
+      const rowClass =
+        isCollapsible && index >= CSV_ROW_LIMIT ? "csv-row-hidden" : "";
+      const cells = line.split(",");
+      tableHtml += `<tr class="${rowClass}">`;
+      cells.forEach((cell) => (tableHtml += `<td>${cell.trim()}</td>`));
+      tableHtml += "</tr>";
+    });
+
+    tableHtml += "</tbody></table>";
+
+    let buttonHtml = "";
+    if (isCollapsible) {
+      buttonHtml = `<button class="csv-toggle-button" data-total-rows="${dataRows.length}">显示全部 ${dataRows.length} 行</button>`;
+    }
+
+    return `<div class="csv-container">${tableHtml}${buttonHtml}</div>`;
+  } catch (error) {
+    console.error(`渲染CSV时出错 ${csvPath}:`, error);
+    return `<p style="color: red;">加载 ${csvPath} 出错</p>`;
+  }
+}
+
+async function renderTxtFile(txtPath) {
+  try {
+    const response = await fetch(txtPath);
+    if (!response.ok) throw new Error(`获取TXT失败: ${response.statusText}`);
+    const textContent = await response.text();
+    const sanitizer = document.createElement("div");
+    sanitizer.textContent = textContent;
+    return `<pre class="rendered-txt-content">${sanitizer.innerHTML}</pre>`;
+  } catch (error) {
+    console.error(`渲染TXT时出错 ${txtPath}:`, error);
+    return `<p style="color: red;">加载 ${txtPath} 出错</p>`;
+  }
+}
+
+function handleCsvToggle(button) {
+  const container = button.closest(".csv-container");
+  if (!container) return;
+
+  container.classList.toggle("is-expanded");
+  const isExpanded = container.classList.contains("is-expanded");
+  const totalRows = button.dataset.totalRows;
+
+  if (isExpanded) {
+    button.textContent = `收起`;
+  } else {
+    button.textContent = `显示全部 ${totalRows} 行`;
+  }
+}
+
+async function createQACard(data) {
   const card = document.createElement("div");
   card.className = "qa-card";
   card.id = `q-${currentDatasetName}-${data.id}`;
@@ -147,29 +217,58 @@ function createQACard(data) {
   }
 
   const questionHtml = markdownConverter.makeHtml(data.question);
-  const answerHtml = markdownConverter.makeHtml(data.answer);
+
+  let answerHtml = "";
+  if (Array.isArray(data.answer)) {
+    for (const item of data.answer) {
+      const path = item.trim();
+      if (path.endsWith(".png") || path.endsWith(".jpg")) {
+        answerHtml += `<img src="${path}" alt="参考图片" class="rendered-image">`;
+      } else if (path.endsWith(".csv")) {
+        answerHtml += await renderCsvToTable(path);
+      } else if (path.endsWith(".txt")) {
+        answerHtml += await renderTxtFile(path);
+      } else {
+        answerHtml += markdownConverter.makeHtml(path);
+      }
+    }
+  } else if (data.answer) {
+    answerHtml = markdownConverter.makeHtml(data.answer);
+  }
 
   let modelsHtml = "";
-  data.modelsData.forEach((modelData, index) => {
-    const modelAnswer = modelData.final_answer;
+  let modelIndex = 0;
+  for (const modelData of data.modelsData) {
+    const modelAnswerText = modelData.final_answer;
     const hasOptions = data.options;
+    const modelAnswerHtml = markdownConverter.makeHtml(modelAnswerText);
 
-    let reasoningContent = "";
-    if (modelData.reasoning) {
-      reasoningContent = Array.isArray(modelData.reasoning)
-        ? modelData.reasoning.join("<br><br>")
-        : modelData.reasoning;
+    let artifactsHtml = "";
+    if (modelData.artifacts && Array.isArray(modelData.artifacts)) {
+      for (const item of modelData.artifacts) {
+        const path = item.trim();
+        if (path.endsWith(".png") || path.endsWith(".jpg")) {
+          artifactsHtml += `<img src="${path}" alt="模型生成图片" class="rendered-image">`;
+        } else if (path.endsWith(".csv")) {
+          artifactsHtml += await renderCsvToTable(path);
+        } else if (path.endsWith(".txt")) {
+          artifactsHtml += await renderTxtFile(path);
+        }
+      }
     }
 
-    const reasoningHtml = markdownConverter.makeHtml(reasoningContent);
-    const modelAnswerHtml = markdownConverter.makeHtml(modelAnswer);
+    if (Array.isArray(modelData.reasoning)) {
+      modelData.reasoning = modelData.reasoning.join("\n");
+    }
 
-    const answerTitle = `回答 ${index + 1}:${
-      hasOptions ? ` ${modelAnswer}` : ""
+    const answerTitle = `回答 ${modelIndex + 1}:${
+      hasOptions ? ` ${modelAnswerText}` : ""
     }`;
     const analysisContent = hasOptions
-      ? `<h5>分析:</h5><div class="explanation-content">${reasoningHtml}</div>`
-      : `<div class="explanation-content">${modelAnswerHtml}</div>`;
+      ? `<h5>分析:</h5><div class="explanation-content">${markdownConverter.makeHtml(
+          modelData.reasoning || ""
+        )}</div>`
+      : `<div class="explanation-content">${modelAnswerHtml}${artifactsHtml}</div>`;
 
     modelsHtml += `
       <div class="model-answer">
@@ -182,17 +281,18 @@ function createQACard(data) {
                   <input type="radio" name="preference" value="${
                     modelData.modelName
                   }" required>
-                  回答 ${index + 1}
+                  回答 ${modelIndex + 1}
               </label>
           </div>
       </div>
     `;
-  });
+    modelIndex++;
+  }
 
   card.innerHTML = `
       <h3>问题 ${data.id}: ${questionHtml}</h3>
       ${optionsHtml}
-      <div class="reference-answer"><strong>参考答案:</strong> ${answerHtml}</div>
+      <div class="reference-answer"><strong>参考答案:</strong>${answerHtml}</div>
       <form class="preference-form" data-question-id="${data.id}" data-qid="${data.qid}">
           <fieldset>
               <legend>请选择以下哪一个回答更好？</legend>
@@ -272,7 +372,6 @@ function showQuestion(questionId) {
   );
   if (targetCard) {
     targetCard.classList.add("active");
-
     document
       .getElementById("main-title")
       .scrollIntoView({ behavior: "smooth" });
@@ -288,11 +387,10 @@ function showQuestion(questionId) {
     });
     const formButton = targetCard.querySelector(".preference-form button");
     if (formButton) {
-      if (questionId === NUM_QUESTIONS[currentDatasetName]) {
-        formButton.textContent = "保存并完成评测";
-      } else {
-        formButton.textContent = "保存并进入下一题";
-      }
+      formButton.textContent =
+        questionId === NUM_QUESTIONS[currentDatasetName]
+          ? "保存并完成评测"
+          : "保存并进入下一题";
     }
   }
 }

@@ -143,10 +143,13 @@ body {
   margin: 15px 0;
   border-radius: 4px;
   font-size: 0.95em;
+  line-height: 1.6;
 }
 
 .reference-answer strong {
   color: #28a745;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .models-comparison {
@@ -201,7 +204,7 @@ body {
   flex-grow: 1;
   min-height: 120px;
   font-size: 0.9em;
-  line-height: 1.5;
+  line-height: 1.6;
   overflow-y: auto;
 }
 
@@ -315,4 +318,93 @@ body {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* --- 新增/修改样式：用于渲染文件 --- */
+.rendered-image {
+  max-width: 100%;
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 10px 0;
+  display: block;
+  background: white;
+}
+
+.csv-container {
+  margin: 15px 0;
+}
+
+.rendered-csv-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9em;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.rendered-csv-table thead tr {
+  background-color: #007bff;
+  color: #ffffff;
+  text-align: left;
+}
+
+.rendered-csv-table th,
+.rendered-csv-table td {
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+}
+
+.rendered-csv-table tbody tr {
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.rendered-csv-table tbody tr:nth-of-type(even) {
+  background-color: #f8f9fa;
+}
+
+.rendered-csv-table tbody tr:last-of-type {
+  border-bottom: 2px solid #007bff;
+}
+
+/* --- 新增：CSV 折叠/展开功能样式 --- */
+.csv-toggle-button {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 0.8em;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: -1px; /* 贴合表格下方 */
+  width: 100%;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  transition: background-color 0.2s;
+}
+
+.csv-toggle-button:hover {
+  background-color: #5a6268;
+}
+
+.csv-container .csv-row-hidden {
+  display: none;
+}
+
+.csv-container.is-expanded .csv-row-hidden {
+  display: table-row;
+}
+
+.rendered-txt-content {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin: 10px 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  max-height: 400px;
+  overflow-y: auto;
+  font-family: 'Courier New', Courier, monospace;
 }
