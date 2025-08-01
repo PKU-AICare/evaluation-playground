@@ -109,6 +109,7 @@ async function fetchQuestionData(datasetName) {
 
 function shuffleQuestionData(questionData, shuffledModels) {
   const shuffledData = {
+    qid: questionData.qid,
     dataset: questionData.dataset,
     question: questionData.question || questionData.task,
     options: questionData.options,
@@ -151,7 +152,7 @@ function createQACard(data) {
   let modelsHtml = "";
   data.modelsData.forEach((modelData, index) => {
     const modelAnswer = modelData.final_answer;
-    const hasOptions = data.options && modelData.pred_answer;
+    const hasOptions = data.options;
 
     let reasoningContent = "";
     if (modelData.reasoning) {
@@ -192,7 +193,7 @@ function createQACard(data) {
       <h3>问题 ${data.id}: ${questionHtml}</h3>
       ${optionsHtml}
       <div class="reference-answer"><strong>参考答案:</strong> ${answerHtml}</div>
-      <form class="preference-form" data-question-id="${data.id}">
+      <form class="preference-form" data-question-id="${data.id}" data-qid="${data.qid}">
           <fieldset>
               <legend>请选择以下哪一个回答更好？</legend>
               <div class="models-comparison">${modelsHtml}</div>
@@ -217,8 +218,9 @@ function handleFormSubmit(event) {
   const formData = new FormData(form);
   const selectedPreference = formData.get("preference");
   const questionId = parseInt(form.dataset.questionId);
+  const qid = form.dataset.qid;
 
-  userSelections[questionId] = selectedPreference;
+  userSelections[qid] = selectedPreference;
 
   const fieldset = form.querySelector("fieldset");
   fieldset.disabled = true;
@@ -271,7 +273,10 @@ function showQuestion(questionId) {
   if (targetCard) {
     targetCard.classList.add("active");
 
-    // --- 新增: 触发 MathJax 渲染当前显示的卡片 ---
+    document
+      .getElementById("main-title")
+      .scrollIntoView({ behavior: "smooth" });
+
     if (window.MathJax) {
       window.MathJax.typesetPromise([targetCard]).catch((err) =>
         console.log("MathJax Typeset Error: ", err)
