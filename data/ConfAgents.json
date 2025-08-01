@@ -1,5 +1,6 @@
 [
     {
+        "qid": 1,
         "dataset": "medbullets",
         "question": "A 31-year-old man presents to the emergency department for fever, malaise, and cough. For the last week, his cough has been progressively worsening, and he has been noticing blood in his sputum. He denies any recent travel or sick contacts and infrequently smokes cigarettes. Approximately 5 weeks ago, he presented with similar symptoms and was found to have a right upper lobe lung infiltrate, a CD4 count of 40/mm^3, and an HIV viral load of 115,000 copies/mL. He was appropriately treated and discharged home. Four weeks after initiation of treatment, his CD4 count was over 400/mm^3 and HIV viral load was negligible. His temperature today is 102°F (38.9°C), blood pressure is 130/90 mmHg, pulse is 100/min, and respirations are 20/min. A radiograph of the chest demonstrates new nodules in the left upper lobe and hilar adenopathy. Which of the following is the most appropriate next step in management?",
         "options": {
@@ -37,6 +38,7 @@
         }
     },
     {
+        "qid": 2,
         "dataset": "medbullets",
         "question": "A 44-year-old woman presents to the emergency department with fluctuating right upper quadrant abdominal pain. The pain was initially a 4/10 in severity but has increased recently to a 6/10 prompting her to come in. The patient has a medical history of type 2 diabetes mellitus, depression, anxiety, and irritable bowel syndrome. Her current medications include metformin, glyburide, escitalopram, and psyllium husks. Her temperature is 99.2°F (37.3°C), pulse of 95/min, blood pressure of 135/90 mmHg, respirations of 15/min with 98% oxygen saturation on room air. On exam, the patient is an obese woman with pain upon palpation of the right upper quadrant. Initial labs are are below:\n\nNa+: 140 mEq/L\nK+: 4.0 mEq/L\nCl-: 100 mEq/L\nHCO3-: 24 mEq/L\nAST: 100 U/L\nALT: 110 U/L\nAmylase: 30 U/L\nAlkaline phosphatase: 125 U/L\n\nBilirubin\nTotal: 2.5 mg/dL\nDirect: 1.8 mg/dL\n\nThe patient is sent for a right upper quadrant ultrasound demonstrating an absence of stones, no pericholecystic fluid, a normal gallbladder contour and no abnormalities noted in the common bile duct. MRCP with secretin infusion is performed demonstrating patent biliary and pancreatic ductal systems. Her lab values and clinical presentation remain unchanged 24 hours later. Which of the following is the most appropriate next step in management?",
         "options": {
@@ -69,6 +71,7 @@
         }
     },
     {
+        "qid": 3,
         "dataset": "medbullets",
         "question": "A 6-month-old boy is brought to the physician by his mother for abnormal movements. Several times a day, he experiences paroxysmal episodes of crying, bending at the waist, and jerking of the arms and legs. These episodes last 1-2 seconds, but occur in clusters every 20-30 seconds for several minutes. His mother's pregnancy, labor, delivery, and his neonatal course have been unremarkable. He is rolling over less frequently than before, has worse head control, and no longer smiles socially. His temperature is 98.6°F (37°C), blood pressure is 92/46 mmHg, pulse is 115/min, and respirations are 34/min. On examination, no dysmorphic features are noted. A 24-hour electroencephalography (EEG) is performed, during which the patient has one of these spells. A chaotic pattern of slowing and multifocal epileptiform charges is seen. Which of the following is the pathophysiology of this patient's condition?",
         "options": {
@@ -101,6 +104,7 @@
         }
     },
     {
+        "qid": 4,
         "dataset": "medbullets",
         "question": "A 7-year-old boy is brought to the emergency department by his parents for worsening symptoms of previously diagnosed acute sinusitis. Initially, the pediatrician prescribed decongestants and sent the patient home. Since then, the patient has developed a nasal discharge with worsening pain. The patient has a medical history of asthma which is well-controlled with albuterol. His temperature is 99.5°F (37.5°C), blood pressure is 90/48 mmHg, pulse is 124/min, respirations are 17/min, and oxygen saturation is 98% on room air. The cardiopulmonary exam is within normal limits. Inspection of the patient's nose reveals a unilateral purulent discharge mixed with blood. The rest of the patient's exam is within normal limits. Which of the following is the most likely diagnosis?",
         "options": {
@@ -133,6 +137,7 @@
         }
     },
     {
+        "qid": 5,
         "dataset": "medbullets",
         "question": "A 23-year-old woman is admitted to the inpatient psychiatry unit after her boyfriend reported she was “acting funny and refusing to talk.” The patient’s boyfriend states that he came home from work and found the patient sitting up in bed staring at the wall. When he said her name or waved his hand in front of her, she did not respond. When he tried to move her, she would remain in whatever position she was placed. Her temperature is 99°F (37.2°C), blood pressure is 122/79 mmHg, pulse is 68/min, and respirations are 12/min with an oxygen saturation of 98% on room air. The patient is lying on the bed with her left arm raised and pointing at the ceiling. She resists any attempt to change her position. The patient remains mute and ignores any external stimuli. The patient’s medical history is significant for depression. She was recently switched from phenelzine to fluoxetine. Which of the following is the most appropriate initial therapy?",
         "options": {
@@ -170,6 +175,7 @@
         }
     },
     {
+        "qid": 6,
         "dataset": "medbullets",
         "question": "A 71-year-old man arrives to the emergency room appearing cyanotic and having weak, shallow respirations. He is brought in by his home care nurse, who reports that the patient has a history of myasthenia gravis and frequent urinary tract infections. The patient was in his normal state of health until 5 days ago when he developed a urinary tract infection. He was receiving gentamicin infusions for his infections. This morning, he experienced poor grip strength and progressive difficulty breathing. The patient’s medications include pyridostigmine and aspirin, both of which he takes as prescribed. His temperature is 99.0°F (37.2°C), blood pressure is 128/78 mmHg, pulse is 92/min, and respirations are 28/min with an oxygen saturation of 86% O2 on room air. The patient has gray-blue skin, hypophonia, weak upper extremities, and normal leg strength. An arterial blood gas is drawn with results as shown below:\n\nPO2: 55 mmHg\nPCO2: 60 mmHg\npH: 7.30\n\nThe patient is intubated. Which of the following is the most appropriate next step in management?",
         "options": {
@@ -202,6 +208,7 @@
         }
     },
     {
+        "qid": 7,
         "dataset": "medbullets",
         "question": "A 22-year-old woman presents to the emergency department with shortness of breath. She was hiking when she suddenly felt unable to breathe and had to take slow deep breaths to improve her symptoms. The patient is a Swedish foreign exchange student and does not speak any English. Her medical history and current medications are unknown. Her temperature is 99.5°F (37.5°C), blood pressure is 127/68 mmHg, pulse is 120/min, respirations are 22/min, and oxygen saturation is 90% on room air. Physical exam is notable for poor air movement bilaterally and tachycardia. The patient is started on treatment. Which of the following parameters including forced expiratory volume in 1 second (FEV1), forced vital capacity (FVC), and diffusing capacity of carbon monoxide (DLCO) most appropriately describes this patient's underlying pathology?",
         "options": {
@@ -234,6 +241,7 @@
         }
     },
     {
+        "qid": 8,
         "dataset": "medbullets",
         "question": "A 67-year-old man is seen on the surgical floor after a transplant procedure. The previous day, the patient had a renal transplant from a matched donor. He is currently recovering and doing well. The patient has a medical history of IV drug use, diabetes mellitus, oral cold sores, hypertension, renal failure, and dyslipidemia. The patient's current medications include lisinopril, atorvastain, insulin, and aspirin. Prior to the procedure, he was also on dialysis. The patient is started on cyclosporine. The patient successfully recovers over the next few days. His temperature is 98.5°F (36.9°C), blood pressure is 121/76 mmHg, pulse is 70/min, and respirations are 13/min. Which of the following medications should be started in this patient?",
         "options": {
@@ -266,6 +274,7 @@
         }
     },
     {
+        "qid": 9,
         "dataset": "medqa",
         "question": "A 25-year-old man presents to his primary care provider complaining of several weeks of intense itching, particularly localized around his anus. Of note, the patient denies any recent travel, sexual contacts, fever, dysuria, or diarrhea. His temperature is 98.1°F (36.7°C), blood pressure is 110/70 mmHg, pulse is 65/min, and respirations are 12/min. On exam, the patient demonstrates severe excoriations in his perianal region with slight erythema over the areas that are torn. He does not have any other dermatologic findings. The scotch tape test is positive. The patient has a previous documented allergy to albendazole. Which of the following is an alternative medication that can be used?",
         "options": {
@@ -301,6 +310,7 @@
         }
     },
     {
+        "qid": 10,
         "dataset": "medqa",
         "question": "A 6-year-old boy presents with fever, malaise, and intense pain in the anterior neck. His vital signs include: body temperature 39.0°C (102.2°F), heart rate 120/min, and respiratory rate 18/min and regular. On physical examination, there is erythema, tenderness and enlargement of the thyroid gland that is worse on the left. Pain is worsened during neck hyperextension and relieved during neck flexion. Thyroid function tests are within normal limits. An ultrasound of the thyroid gland reveals a unifocal perithyroidal hypoechoic space. Which of the following is the most likely mechanism underlying this patient’s condition?",
         "options": {
@@ -336,6 +346,7 @@
         }
     },
     {
+        "qid": 11,
         "dataset": "medqa",
         "question": "A 72-year-old man with hypertension and type 2 diabetes mellitus is admitted to the hospital for the evaluation of breathlessness and fatigue. His pulse is 100/min, and blood pressure is 90/60 mm Hg. Further evaluation shows a systemic vascular resistance of 35 mm Hg × min/L with an end-systolic volume of 80 mL. Which of the following describes the ejection fraction in this patient?",
         "options": {
@@ -367,6 +378,7 @@
         }
     },
     {
+        "qid": 12,
         "dataset": "medqa",
         "question": "A 35-year-old woman comes to the physician for genetic counseling prior to conception. Her younger brother has mild developmental delay, pale complexion, and has to limit his dietary intake of phenylalanine. She has no similar symptoms and is in good health. Her parents are healthy. Which of the following is the most appropriate assessment of her carrier status for the disease affecting her brother?",
         "options": {
@@ -398,6 +410,7 @@
         }
     },
     {
+        "qid": 13,
         "dataset": "medqa",
         "question": "A 27-year-old woman presents to her primary care physician for a general checkup. She has been doing well in school and has no complaints. The patient has a past medical history of asthma which is controlled with albuterol. She is currently sexually active but states that she uses birth control. She has many friends and states that her mood is typically positive. The patient's last pap smear was 1 year ago. Her father died of colon cancer at the age of 68, and her mother was diagnosed with breast cancer at the age of 65. Her temperature is 98.7°F (37.1°C), blood pressure is 147/108 mmHg, pulse is 80/min, respirations are 15/min, and oxygen saturation is 99% on room air. The patient's BMI is 19 kg/m^2. Physical exam demonstrates a normal S1 and S2, normal breath sounds, and an abdominal exam that is within normal limits. Which of the following is the best next step in management?",
         "options": {
@@ -429,6 +442,7 @@
         }
     },
     {
+        "qid": 14,
         "dataset": "medqa",
         "question": "A 74-year-old woman is brought to her primary care doctor by her adult son. The son says she has been very difficult at home and is \"losing it\". He seems very frustrated about her diminishing ability to take care of herself the way she used to and no longer thinks he can trust her watching his children. At her last visit you noted mild cognitive impairment. Today, she appears withdrawn and hesitates to make eye-contact with you. She lets her son do most of the talking. Which of the following is the most appropriate next step?",
         "options": {
@@ -464,6 +478,7 @@
         }
     },
     {
+        "qid": 15,
         "dataset": "medqa",
         "question": "A 23-year-old primigravida presents for a regular prenatal care visit at 16 weeks gestation. She complains of increased fatigability, but is otherwise well. She takes folic acid, iron, and vitamin D supplementation. Her vital signs are as follows: blood pressure, 110/70 mm Hg; heart rate, 86/min; respiratory rate, 13/min; and temperature, 36.6℃ (97.9℉). The physical examination is unremarkable. The complete blood count results are as below:\nErythrocyte count 3.9 million/mm3\nHb 11.1 g/dL\nHCT 32%\nReticulocyte count 0.2%\nMCV 90 fL\nPlatelet count 210,000/mm3\nLeukocyte count 8,100/mm3\nWhich of the following tests is required to investigate the cause of the patient’s laboratory findings?",
         "options": {
@@ -495,6 +510,7 @@
         }
     },
     {
+        "qid": 16,
         "dataset": "medqa",
         "question": "A 27-year-old man presents to the emergency room complaining of left shoulder pain for several weeks. He says that the pain often worsens when he tries to sleep on his left side. Although he tried several pain medications, none of the pain medications helped. He is an amateur tennis player who practices on weekends. He denies any trauma during his practice sessions. On examination of the shoulder joint, severe tenderness was present localized to the greater tuberosity of the left shoulder joint along with biceps tendon tenderness over the bicipital groove. The range of motion was limited to the left side. An X-ray of the joint showed narrowing of the acromiohumeral space with sclerosis and spurring of the acromion. Routine blood test results are normal except for the rheumatoid factor, which is positive. What is the most likely diagnosis?",
         "options": {
