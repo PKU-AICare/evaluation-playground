@@ -15,11 +15,16 @@ const evaluationArea = document.getElementById("evaluation-area");
 const mainTitle = document.getElementById("main-title");
 const loadingSpinner = document.getElementById("loading-spinner");
 const exportContainer = document.getElementById("export-container");
-const paginationNav = document.getElementById("pagination-nav"); // 新增
+const paginationNav = document.getElementById("pagination-nav");
 
 // --- 状态变量 ---
 let currentDatasetName = "";
 let userSelections = {};
+
+// --- 修改: 初始化 Markdown 转换器，增加配置以兼容公式 ---
+const markdownConverter = new showdown.Converter({
+  literalMidWordUnderscores: true, // 防止 a_b 被错误地转为 a<em>b</em>
+});
 
 // --- 初始化 ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -54,7 +59,7 @@ async function loadAndDisplayDataset(datasetName) {
   mainTitle.textContent = `评测数据集: ${datasetName}`;
   evaluationArea.innerHTML = "";
   exportContainer.innerHTML = "";
-  paginationNav.innerHTML = ""; // 清空导航
+  paginationNav.innerHTML = "";
   loadingSpinner.style.display = "block";
 
   currentDatasetName = datasetName;
@@ -77,7 +82,6 @@ async function loadAndDisplayDataset(datasetName) {
         evaluationArea.appendChild(card);
       }
     }
-    // 加载完成后，创建导航并显示第一个问题
     createPaginationNav();
     showQuestion(1);
   } catch (error) {
@@ -96,7 +100,7 @@ async function fetchQuestionData(datasetName) {
       throw new Error(`网络响应错误: ${response.statusText}`);
     }
     const data = await response.json();
-    return data; // 直接返回从JSON文件读取的数据列表
+    return data;
   } catch (error) {
     console.error(`无法加载文件: ${url}`, error);
     return null;
@@ -104,7 +108,6 @@ async function fetchQuestionData(datasetName) {
 }
 
 function shuffleQuestionData(questionData, shuffledModels) {
-  // 创建问题数据的副本，保留基本信息
   const shuffledData = {
     dataset: questionData.dataset,
     question: questionData.question || questionData.task,
@@ -112,14 +115,10 @@ function shuffleQuestionData(questionData, shuffledModels) {
     answer: questionData.reference_answer,
   };
 
-  // 创建新的modelsData数组，按照shuffledModels的顺序排列
   shuffledData.modelsData = [];
-
   shuffledModels.forEach((modelName, index) => {
-    // 从原始数据中获取对应模型的数据
     const modelData = questionData[modelName];
     if (modelData) {
-      // 添加模型名称到数据中，用于后续显示
       const shuffledModelData = {
         ...modelData,
         modelName: modelName,
@@ -146,12 +145,14 @@ function createQACard(data) {
     optionsHtml += "</ol>";
   }
 
+  const questionHtml = markdownConverter.makeHtml(data.question);
+  const answerHtml = markdownConverter.makeHtml(data.answer);
+
   let modelsHtml = "";
   data.modelsData.forEach((modelData, index) => {
     const modelAnswer = modelData.final_answer;
     const hasOptions = data.options && modelData.pred_answer;
 
-    // 处理reasoning字段，可能是数组或字符串
     let reasoningContent = "";
     if (modelData.reasoning) {
       reasoningContent = Array.isArray(modelData.reasoning)
@@ -159,12 +160,15 @@ function createQACard(data) {
         : modelData.reasoning;
     }
 
+    const reasoningHtml = markdownConverter.makeHtml(reasoningContent);
+    const modelAnswerHtml = markdownConverter.makeHtml(modelAnswer);
+
     const answerTitle = `回答 ${index + 1}:${
       hasOptions ? ` ${modelAnswer}` : ""
     }`;
     const analysisContent = hasOptions
-      ? `<h5>分析:</h5><div class="explanation-content">${reasoningContent}</div>`
-      : `<div class="explanation-content">${modelAnswer}</div>`;
+      ? `<h5>分析:</h5><div class="explanation-content">${reasoningHtml}</div>`
+      : `<div class="explanation-content">${modelAnswerHtml}</div>`;
 
     modelsHtml += `
       <div class="model-answer">
@@ -185,9 +189,9 @@ function createQACard(data) {
   });
 
   card.innerHTML = `
-      <h3>问题 ${data.id}: ${data.question}</h3>
+      <h3>问题 ${data.id}: ${questionHtml}</h3>
       ${optionsHtml}
-      <div class="reference-answer"><strong>参考答案:</strong> <p>${data.answer}</p></div>
+      <div class="reference-answer"><strong>参考答案:</strong> ${answerHtml}</div>
       <form class="preference-form" data-question-id="${data.id}">
           <fieldset>
               <legend>请选择以下哪一个回答更好？</legend>
@@ -205,9 +209,6 @@ function createQACard(data) {
   return card;
 }
 
-/**
- * [修改] 提交后自动跳转到下一题
- */
 function handleFormSubmit(event) {
   event.preventDefault();
   const form = event.target;
@@ -223,34 +224,26 @@ function handleFormSubmit(event) {
   fieldset.disabled = true;
   form.querySelector("button").style.display = "none";
 
-  // 将反馈信息移到按钮原来的位置
   const feedbackSpan = form.querySelector(".submission-feedback");
   feedbackSpan.textContent = "✓ 已保存";
 
-  // 更新导航栏该题目的状态
   const navLink = document.querySelector(
     `.page-link[data-question-id="${questionId}"]`
   );
   if (navLink) navLink.classList.add("completed");
 
-  // 检查是否全部完成
   if (
     Object.keys(userSelections).length === NUM_QUESTIONS[currentDatasetName]
   ) {
     showExportButton();
-    // 最后一题，不跳转
   } else {
-    // 自动跳转到下一题
     const nextQuestionId = questionId + 1;
     setTimeout(() => {
       showQuestion(nextQuestionId);
-    }, 300); // 延迟一小会，让用户看到“已保存”的反馈
+    }, 300);
   }
 }
 
-/**
- * [新增] 创建分页导航
- */
 function createPaginationNav() {
   for (let i = 1; i <= NUM_QUESTIONS[currentDatasetName]; i++) {
     const link = document.createElement("a");
@@ -266,27 +259,28 @@ function createPaginationNav() {
   }
 }
 
-/**
- * [新增] 显示指定ID的问题
- */
 function showQuestion(questionId) {
   if (questionId > NUM_QUESTIONS[currentDatasetName] || questionId < 1) return;
 
-  // 隐藏所有卡片
   document
     .querySelectorAll(".qa-card")
     .forEach((card) => card.classList.remove("active"));
-  // 显示目标卡片
   const targetCard = document.getElementById(
     `q-${currentDatasetName}-${questionId}`
   );
   if (targetCard) {
     targetCard.classList.add("active");
-    // 更新导航链接的激活状态
+
+    // --- 新增: 触发 MathJax 渲染当前显示的卡片 ---
+    if (window.MathJax) {
+      window.MathJax.typesetPromise([targetCard]).catch((err) =>
+        console.log("MathJax Typeset Error: ", err)
+      );
+    }
+
     document.querySelectorAll(".page-link").forEach((link) => {
       link.classList.toggle("active", link.dataset.questionId == questionId);
     });
-    // 更新最后一题的按钮文本
     const formButton = targetCard.querySelector(".preference-form button");
     if (formButton) {
       if (questionId === NUM_QUESTIONS[currentDatasetName]) {
