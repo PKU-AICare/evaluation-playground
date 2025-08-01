@@ -2,16 +2,11 @@
 const DATASETS = ["ConfAgents", "HealthFlow"];
 const MODELS = {
   ConfAgents: ["conformal", "colacare", "mdagents", "medagent"],
-  HealthFlow: [
-    "SingleLLM_deepseek-v3",
-    "SingleLLM_deepseek-r1",
-    "ColaCare",
-    "MedAgent",
-  ],
+  HealthFlow: ["alita", "biomni", "healthflow", "stella"],
 };
 const NUM_QUESTIONS = {
   ConfAgents: 16,
-  HealthFlow: 16,
+  HealthFlow: 10,
 };
 
 // --- DOM 元素获取 ---
@@ -112,9 +107,9 @@ function shuffleQuestionData(questionData, shuffledModels) {
   // 创建问题数据的副本，保留基本信息
   const shuffledData = {
     dataset: questionData.dataset,
-    question: questionData.question,
+    question: questionData.question || questionData.task,
     options: questionData.options,
-    answer: questionData.answer,
+    answer: questionData.reference_answer,
   };
 
   // 创建新的modelsData数组，按照shuffledModels的顺序排列
@@ -153,28 +148,29 @@ function createQACard(data) {
 
   let modelsHtml = "";
   data.modelsData.forEach((modelData, index) => {
-    let letter = "";
-    if (data.options && modelData.pred_answer) {
-      letter = modelData.pred_answer;
-    }
-    const answerTitle = `回答 ${index + 1}: ${letter}`;
+    const modelAnswer = modelData.final_answer;
+    const hasOptions = data.options && modelData.pred_answer;
 
     // 处理reasoning字段，可能是数组或字符串
     let reasoningContent = "";
     if (modelData.reasoning) {
-      if (Array.isArray(modelData.reasoning)) {
-        reasoningContent = modelData.reasoning.join("<br><br>");
-      } else {
-        reasoningContent = modelData.reasoning;
-      }
+      reasoningContent = Array.isArray(modelData.reasoning)
+        ? modelData.reasoning.join("<br><br>")
+        : modelData.reasoning;
     }
+
+    const answerTitle = `回答 ${index + 1}:${
+      hasOptions ? ` ${modelAnswer}` : ""
+    }`;
+    const analysisContent = hasOptions
+      ? `<h5>分析:</h5><div class="explanation-content">${reasoningContent}</div>`
+      : `<div class="explanation-content">${modelAnswer}</div>`;
 
     modelsHtml += `
       <div class="model-answer">
           <h4>${answerTitle}</h4>
           <div class="analysis-box">
-              <h5>分析:</h5>
-              <div class="explanation-content">${reasoningContent}</div>
+              ${analysisContent}
           </div>
           <div class="radio-wrapper">
               <label>
