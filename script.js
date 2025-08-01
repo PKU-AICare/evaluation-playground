@@ -10,6 +10,10 @@ const NUM_QUESTIONS = {
 };
 const CSV_ROW_LIMIT = 5; // 定义CSV可折叠的行数阈值
 
+// --- 全局状态变量 ---
+let currentDatasetName = "";
+let userSelections = {};
+
 // --- DOM 元素获取 ---
 const datasetList = document.getElementById("dataset-list");
 const evaluationArea = document.getElementById("evaluation-area");
@@ -322,17 +326,15 @@ function handleFormSubmit(event) {
 
   userSelections[qid] = selectedPreference;
 
-  const fieldset = form.querySelector("fieldset");
-  fieldset.disabled = true;
-  form.querySelector("button").style.display = "none";
-
   const feedbackSpan = form.querySelector(".submission-feedback");
   feedbackSpan.textContent = "✓ 已保存";
 
   const navLink = document.querySelector(
     `.page-link[data-question-id="${questionId}"]`
   );
-  if (navLink) navLink.classList.add("completed");
+  if (navLink) {
+    navLink.classList.add("completed");
+  }
 
   if (
     Object.keys(userSelections).length === NUM_QUESTIONS[currentDatasetName]
@@ -375,6 +377,24 @@ function showQuestion(questionId) {
     document
       .getElementById("main-title")
       .scrollIntoView({ behavior: "smooth" });
+
+    // 当显示问题时，恢复之前的选择
+    const form = targetCard.querySelector(".preference-form");
+    const qid = form.dataset.qid;
+    const feedbackSpan = form.querySelector(".submission-feedback");
+
+    if (userSelections.hasOwnProperty(qid)) {
+      const savedValue = userSelections[qid];
+      const radioToCheck = form.querySelector(
+        `input[name="preference"][value="${savedValue}"]`
+      );
+      if (radioToCheck) {
+        radioToCheck.checked = true;
+      }
+      feedbackSpan.textContent = "✓ 已保存"; // 如果有答案，则显示“已保存”
+    } else {
+      feedbackSpan.textContent = ""; // 如果是新问题，则清空反馈信息
+    }
 
     if (window.MathJax) {
       window.MathJax.typesetPromise([targetCard]).catch((err) =>
